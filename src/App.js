@@ -22,12 +22,8 @@ function App() {
       .finally(() => setIsloading(false));
   }, [requestText]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   if (error) {
-    return <h1>Error:{error}</h1>;
+    return <h1>Error: {error}</h1>;
   }
 
   return (
@@ -38,11 +34,18 @@ function App() {
           setRequestText(text);
         }}
       />
-      {news !== null
-        ? news.articles.map((newsItem, index) => (
-            <NewsItem key={index} {...newsItem} />
-          ))
-        : ''}
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        news != null &&
+        news.articles.map((newsItem, index) => (
+          <NewsItem key={index} {...newsItem} />
+        ))
+      )}
+      {news !== null && news.articles.length === 0 && (
+        <h2>We can't find news...</h2>
+      )}
     </div>
   );
 }
