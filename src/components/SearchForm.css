@@ -1,11 +1,11 @@
 .header {
   position: fixed;
-  background-color: rgb(101, 240, 240);
+  background-color: rgb(206, 230, 175);
   width: 100%;
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 10px;
-  height: 65px;
+  bottom: 20px;
+  height: 70px;
   z-index: 999;
 }
