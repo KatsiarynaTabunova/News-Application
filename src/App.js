@@ -9,9 +9,10 @@ function App() {
   const [error, setError] = useState('');
   const [requestText, setRequestText] = useState('school-bus');
   const [isLoading, setIsloading] = useState(true);
+  const [requestData, setRequestData] = useState('2022-09-26');
 
   useEffect(() => {
-    const url = `https://newsapi.org/v2/everything?q=${requestText}&from=2022-08-25&sortBy=publishedAt&apiKey=6e34452f4a44425c9a9756b6a1a231f2&pageSize=10&page=1`;
+    const url = `https://newsapi.org/v2/everything?q=${requestText}&from=${requestData}&sortBy=publishedAt&apiKey=6e34452f4a44425c9a9756b6a1a231f2&pageSize=10&page=1`;
     fetch(url)
       .then((response) => response.json())
       .then((object) => {
@@ -20,7 +21,7 @@ function App() {
       })
       .catch((error) => setError(error.message))
       .finally(() => setIsloading(false));
-  }, [requestText]);
+  }, [requestText, requestData]);
 
   if (error) {
     return <h1>Error: {error}</h1>;
@@ -32,6 +33,10 @@ function App() {
         setRequestText={(text) => {
           setIsloading(true);
           setRequestText(text);
+        }}
+        setRequestData={(data) => {
+          setIsloading(true);
+          setRequestData(data);
         }}
       />
 
