@@ -9,7 +9,7 @@ function App() {
   const [error, setError] = useState('');
   const [requestText, setRequestText] = useState('school-bus');
   const [isLoading, setIsloading] = useState(true);
-  const [requestData, setRequestData] = useState('2022-09-26');
+  const [requestData, setRequestData] = useState('2022-09-30');
 
   useEffect(() => {
     const url = `https://newsapi.org/v2/everything?q=${requestText}&from=${requestData}&sortBy=publishedAt&apiKey=6e34452f4a44425c9a9756b6a1a231f2&pageSize=10&page=1`;
