@@ -1,42 +1,38 @@
 import { useState } from 'react';
 import Dropdown from './Dropdown';
+import { handleDaysOfDate, handleMonthOfDate } from '../utils/DateUtils';
 import './SearchForm.css';
 
-function SearchForm({ setRequestText, setRequestData }) {
+function SearchForm({ setRequestText, setRequestData, setRequestSort }) {
   const [searchText, setSearchText] = useState('');
   const [searchDate, setSearchDate] = useState('');
-  const [dropDownState, setDropDownState] = useState('Today');
+  const [dropDownDateState, setDropDownDateState] = useState('Today');
+  const [dropDownSortState, setDropDownSortState] = useState('Popularity');
 
-  function handleDate(days) {
-    const todayDate = new Date();
-    const currentDate = new Date(todayDate);
-    currentDate.setDate(currentDate.getDate() - days);
-    return currentDate.toISOString().slice(0, 10);
-  }
-
-  const options = [
-    { label: 'Today', value: 'today' },
-    { label: 'Yesterday', value: 'yesterday' },
-    { label: 'Two weeks ago', value: 'two-weeks-ago' },
-  ];
-  const handleChange = (event) => {
+  const handleDropdownDateChange = (event) => {
     let dropDownValue = event.target.value;
+
     switch (dropDownValue) {
       case 'today':
-        dropDownValue = handleDate(0);
-        console.log('today');
-        break;
-      case 'yesterday':
-        dropDownValue = handleDate(1);
+        dropDownValue = handleDaysOfDate(0);
         break;
       case 'two-weeks-ago':
-        dropDownValue = handleDate(14);
+        dropDownValue = handleDaysOfDate(14);
+        break;
+      case 'one-month-ago':
+        dropDownValue = handleMonthOfDate(1);
         break;
       default:
-        dropDownValue = handleDate(0);
+        dropDownValue = handleDaysOfDate(0);
     }
-    setDropDownState(dropDownValue);
+    setDropDownDateState(dropDownValue);
     setSearchDate(dropDownValue);
+  };
+
+  const handleDropdownSortChange = (event) => {
+    let dropDownSortValue = event.target.value;
+
+    setDropDownSortState(dropDownSortValue);
   };
 
   function handleFormSubmit(event) {
@@ -44,6 +40,7 @@ function SearchForm({ setRequestText, setRequestData }) {
 
     setRequestText(searchText);
     setRequestData(searchDate);
+    setRequestSort(dropDownSortState);
   }
 
   return (
@@ -61,11 +58,24 @@ function SearchForm({ setRequestText, setRequestData }) {
           onChange={(e) => setSearchDate(e.target.value)}
         />
         <button type="submit">Search</button>
-        <div>
+        <div className="dropdown-menus">
           <Dropdown
-            options={options}
-            value={dropDownState}
-            onChange={handleChange}
+            options={[
+              { label: 'Today', value: 'today' },
+              { label: 'Two weeks ago', value: 'two-weeks-ago' },
+              { label: 'One month ago', value: 'one-month-ago' },
+            ]}
+            value={dropDownDateState}
+            onChange={handleDropdownDateChange}
+          />
+          <Dropdown
+            options={[
+              { label: 'Popularity', value: 'popularity' },
+              { label: 'PublishedAt', value: 'publishedAt' },
+              { label: 'Relevancy', value: 'relevancy' },
+            ]}
+            value={dropDownSortState}
+            onChange={handleDropdownSortChange}
           />
         </div>
       </div>

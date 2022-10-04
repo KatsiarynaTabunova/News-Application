@@ -1,9 +1,9 @@
 .dropdown-menu {
-  margin: 0 auto;
   font-size: 15px;
   display: flex;
   text-align: center;
   align-items: center;
   padding: 5px 10px;
   border: none;
+  margin: 0 15px;
 }
