@@ -20,7 +20,7 @@ function App() {
         return;
       }
       const url = `https://newsapi.org/v2/everything?q=${requestText}&from=${requestData}&sortBy=${requestSort}&apiKey=79ff21b6d74340a99ab48c47e88e1aa1&pageSize=5&page=${currentPage}`;
-
+      console.log('fetch');
       fetch(url)
         .then((response) => response.json())
         .then((newsObject) => {
@@ -28,7 +28,6 @@ function App() {
             return;
           }
           setNews((prev) => {
-            console.log(prev);
             return [...prev, ...newsObject.articles];
           });
 
@@ -36,6 +35,7 @@ function App() {
         })
         .catch((error) => setError(error.message))
         .finally(() => {
+          document.addEventListener('scroll', scrollHandler);
           setIsloading(false);
           setFetching(false);
         });
@@ -47,17 +47,20 @@ function App() {
     return function () {
       document.removeEventListener('scroll', scrollHandler);
     };
-  }, []);
+  }, [currentPage]);
 
   const scrollHandler = (e) => {
     if (
       e.target.body.offsetHeight - (window.pageYOffset + window.innerHeight) <
       100
-      //   &&
       // news !== null &&
-      // news.articles.length < 50
-    )
-      setFetching(true);
+      // news.articles.length < 15
+    ) {
+      if (!fetching) {
+        document.removeEventListener('scroll', scrollHandler);
+        setFetching(true);
+      }
+    }
   };
 
   if (error) {
