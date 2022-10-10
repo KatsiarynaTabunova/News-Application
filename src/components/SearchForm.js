@@ -3,7 +3,12 @@ import Dropdown from './Dropdown';
 import { handleDaysOfDate, handleMonthOfDate } from '../utils/DateUtils';
 import './SearchForm.css';
 
-function SearchForm({ setRequestText, setRequestData, setRequestSort }) {
+function SearchForm({
+  setRequestText,
+  setRequestData,
+  setRequestSort,
+  submit,
+}) {
   const [searchText, setSearchText] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [dropDownDateState, setDropDownDateState] = useState('Today');
@@ -41,6 +46,7 @@ function SearchForm({ setRequestText, setRequestData, setRequestSort }) {
     setRequestText(searchText);
     setRequestData(searchDate);
     setRequestSort(dropDownSortState);
+    submit();
   }
 
   return (
