@@ -52,12 +52,14 @@ function SearchForm({
   return (
     <form className="header" onSubmit={handleFormSubmit}>
       <div>
+        <label className="label">Search form:</label>
         <input
           type="text"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="enter information"
         />
+        <label className="label">Exact date:</label>
         <input
           type="date"
           value={searchDate}
@@ -66,6 +68,7 @@ function SearchForm({
         <button type="submit">Search</button>
         <div className="dropdown-menus">
           <Dropdown
+            labelValue="Date:"
             options={[
               { label: 'Today', value: 'today' },
               { label: 'Two weeks ago', value: 'two-weeks-ago' },
@@ -75,6 +78,7 @@ function SearchForm({
             onChange={handleDropdownDateChange}
           />
           <Dropdown
+            labelValue="Sorting:"
             options={[
               { label: 'Popularity', value: 'popularity' },
               { label: 'PublishedAt', value: 'publishedAt' },

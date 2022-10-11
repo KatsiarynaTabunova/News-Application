@@ -12,15 +12,13 @@ function App() {
   const [requestData, setRequestData] = useState('2022-09-30');
   const [requestSort, setRequestSort] = useState('Popularity');
   const [currentPage, setCurrentPage] = useState('1');
-  const [fetching, setFetching] = useState('true');
+  const [fetching, setFetching] = useState(false);
+  const [totalAmount, setTotalAmount] = useState('0');
 
   useEffect(() => {
     if (fetching) {
-      if (currentPage > 5) {
-        return;
-      }
-      const url = `https://newsapi.org/v2/everything?q=${requestText}&from=${requestData}&sortBy=${requestSort}&apiKey=79ff21b6d74340a99ab48c47e88e1aa1&pageSize=5&page=${currentPage}`;
-      console.log('fetch');
+      const url = `https://newsapi.org/v2/everything?q=${requestText}&from=${requestData}&sortBy=${requestSort}&apiKey=79ff21b6d74340a99ab48c47e88e1aa1&pageSize=2&page=${currentPage}`;
+
       fetch(url)
         .then((response) => response.json())
         .then((newsObject) => {
@@ -30,7 +28,7 @@ function App() {
           setNews((prev) => {
             return [...prev, ...newsObject.articles];
           });
-
+          setTotalAmount(newsObject.totalResults);
           setCurrentPage((prevState) => +prevState + 1);
         })
         .catch((error) => setError(error.message))
@@ -53,10 +51,8 @@ function App() {
     if (
       e.target.body.offsetHeight - (window.pageYOffset + window.innerHeight) <
       100
-      // news !== null &&
-      // news.articles.length < 15
     ) {
-      if (!fetching) {
+      if (!fetching && news.length < totalAmount) {
         document.removeEventListener('scroll', scrollHandler);
         setFetching(true);
       }
@@ -83,6 +79,7 @@ function App() {
           setRequestSort(typeOfSort);
         }}
         submit={() => {
+          // setIsPagination = false;
           setFetching(true);
         }}
       />
@@ -95,7 +92,7 @@ function App() {
           <NewsItem key={index * currentPage} {...newsItem} />
         ))
       )}
-      {/* {news !== null && news.length === 0 && <h2>We can't find news...</h2>} */}
+      {news !== null && news.length === 0 && <h2>We can't find news...</h2>}
     </div>
   );
 }
