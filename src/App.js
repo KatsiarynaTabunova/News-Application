@@ -14,6 +14,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('1');
   const [fetching, setFetching] = useState(false);
   const [totalAmount, setTotalAmount] = useState('0');
+  const [isPagination, setIsPagination] = useState(false);
 
   useEffect(() => {
     if (fetching) {
@@ -25,9 +26,13 @@ function App() {
           if (newsObject === null) {
             return;
           }
-          setNews((prev) => {
-            return [...prev, ...newsObject.articles];
-          });
+          if (isPagination) {
+            setNews((prev) => {
+              return [...prev, ...newsObject.articles];
+            });
+          } else {
+            setNews(newsObject.articles);
+          }
           setTotalAmount(newsObject.totalResults);
           setCurrentPage((prevState) => +prevState + 1);
         })
@@ -54,6 +59,7 @@ function App() {
     ) {
       if (!fetching && news.length < totalAmount) {
         document.removeEventListener('scroll', scrollHandler);
+        setIsPagination(true);
         setFetching(true);
       }
     }
@@ -79,7 +85,8 @@ function App() {
           setRequestSort(typeOfSort);
         }}
         submit={() => {
-          // setIsPagination = false;
+          setIsPagination(false);
+          setCurrentPage(1);
           setFetching(true);
         }}
       />
