@@ -15,7 +15,7 @@ function App() {
   const [fetching, setFetching] = useState(false);
   const [totalAmount, setTotalAmount] = useState('0');
   const [isPagination, setIsPagination] = useState(false);
-  const [requestTextDirty, setRequestTextDirty] = useState(false);
+  const [showInputError, setShowInputError] = useState(false);
 
   useEffect(() => {
     if (fetching) {
@@ -87,17 +87,16 @@ function App() {
         }}
         submit={(event) => {
           if (requestText === '') {
-            setRequestTextDirty(!requestTextDirty);
+            setShowInputError(true);
             alert('Поле пустое');
           } else {
-            if (requestTextDirty === true) {
-              setRequestTextDirty(!requestTextDirty);
-            }
+            setShowInputError(false);
             setIsPagination(false);
             setCurrentPage(1);
             setFetching(true);
           }
         }}
+        showInputError={showInputError}
       />
 
       {isLoading ? (

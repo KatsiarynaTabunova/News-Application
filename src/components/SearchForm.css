@@ -20,8 +20,11 @@ input {
   border: none;
 }
 
-.red {
-  border-color: red;
+.error {
+  border: 2px solid red;
+}
+.none {
+  border-color: none;
 }
 
 .dropdown-menus {

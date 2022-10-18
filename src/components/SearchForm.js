@@ -8,16 +8,12 @@ function SearchForm({
   setRequestData,
   setRequestSort,
   submit,
-  setRequestTextDirty,
+  showInputError,
 }) {
   const [searchDate, setSearchDate] = useState('');
   const [dropDownDateState, setDropDownDateState] =
     useState('Choose the option');
   const [dropDownSortState, setDropDownSortState] = useState('Popularity');
-
-  // const [searchTextError, setSearchTextError] = useState(
-  //   'The field cannot be empty!'
-  // );
 
   const handleDropdownDateChange = (event) => {
     let dropDownValue = event.target.value;
@@ -51,7 +47,6 @@ function SearchForm({
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    console.log(setRequestTextDirty);
     setRequestData(searchDate);
     setRequestSort(dropDownSortState);
 
@@ -63,11 +58,9 @@ function SearchForm({
   return (
     <form className="header" onSubmit={handleFormSubmit}>
       <div>
-        {/* {searchTextDirty && searchTextError && (
-          <div style={{ color: 'red' }}>{searchTextError}</div>
-        )} */}
         <label className="label">Search form:</label>
         <input
+          className={showInputError === true ? 'error' : 'none'}
           type="text"
           onChange={(e) => {
             console.log('setSearchText=' + e.target.value);
