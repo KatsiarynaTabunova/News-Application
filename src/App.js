@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   const [news, setNews] = useState([]);
   const [error, setError] = useState('');
-  const [requestText, setRequestText] = useState('school-bus');
+  const [requestText, setRequestText] = useState('');
   const [isLoading, setIsloading] = useState(true);
   const [requestData, setRequestData] = useState('2022-09-30');
   const [requestSort, setRequestSort] = useState('Popularity');
@@ -15,6 +15,7 @@ function App() {
   const [fetching, setFetching] = useState(false);
   const [totalAmount, setTotalAmount] = useState('0');
   const [isPagination, setIsPagination] = useState(false);
+  const [requestTextDirty, setRequestTextDirty] = useState(false);
 
   useEffect(() => {
     if (fetching) {
@@ -73,7 +74,7 @@ function App() {
     <div className="App">
       <SearchForm
         setRequestText={(text) => {
-          setIsloading(true);
+          console.log('setRequestText=' + text);
           setRequestText(text);
         }}
         setRequestData={(data) => {
@@ -84,10 +85,18 @@ function App() {
           setIsloading(true);
           setRequestSort(typeOfSort);
         }}
-        submit={() => {
-          setIsPagination(false);
-          setCurrentPage(1);
-          setFetching(true);
+        submit={(event) => {
+          if (requestText === '') {
+            setRequestTextDirty(!requestTextDirty);
+            alert('Поле пустое');
+          } else {
+            if (requestTextDirty === true) {
+              setRequestTextDirty(!requestTextDirty);
+            }
+            setIsPagination(false);
+            setCurrentPage(1);
+            setFetching(true);
+          }
         }}
       />
 

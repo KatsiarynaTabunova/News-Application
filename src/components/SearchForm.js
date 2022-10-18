@@ -8,16 +8,24 @@ function SearchForm({
   setRequestData,
   setRequestSort,
   submit,
+  setRequestTextDirty,
 }) {
-  const [searchText, setSearchText] = useState('');
   const [searchDate, setSearchDate] = useState('');
-  const [dropDownDateState, setDropDownDateState] = useState('Today');
+  const [dropDownDateState, setDropDownDateState] =
+    useState('Choose the option');
   const [dropDownSortState, setDropDownSortState] = useState('Popularity');
+
+  // const [searchTextError, setSearchTextError] = useState(
+  //   'The field cannot be empty!'
+  // );
 
   const handleDropdownDateChange = (event) => {
     let dropDownValue = event.target.value;
 
     switch (dropDownValue) {
+      case 'choose the option':
+        dropDownValue = 0;
+        break;
       case 'today':
         dropDownValue = handleDaysOfDate(0);
         break;
@@ -43,33 +51,43 @@ function SearchForm({
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    setRequestText(searchText);
+    console.log(setRequestTextDirty);
     setRequestData(searchDate);
     setRequestSort(dropDownSortState);
+
+    // localStorage.setItem('searchText', searchText);
+    // localStorage.setItem('udate', searchDate ? user : '');
     submit();
   }
 
   return (
     <form className="header" onSubmit={handleFormSubmit}>
       <div>
+        {/* {searchTextDirty && searchTextError && (
+          <div style={{ color: 'red' }}>{searchTextError}</div>
+        )} */}
         <label className="label">Search form:</label>
         <input
           type="text"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={(e) => {
+            console.log('setSearchText=' + e.target.value);
+            setRequestText(e.target.value);
+          }}
           placeholder="enter information"
         />
-        <label className="label">Exact date:</label>
-        <input
-          type="date"
-          value={searchDate}
-          onChange={(e) => setSearchDate(e.target.value)}
-        />
+
         <button type="submit">Search</button>
         <div className="dropdown-menus">
+          <label className="label">Exact date:</label>
+          <input
+            type="date"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+          />
           <Dropdown
             labelValue="Date:"
             options={[
+              { label: 'Choose the option', value: 'choose the option' },
               { label: 'Today', value: 'today' },
               { label: 'Two weeks ago', value: 'two-weeks-ago' },
               { label: 'One month ago', value: 'one-month-ago' },

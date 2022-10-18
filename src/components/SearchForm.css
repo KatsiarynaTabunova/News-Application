@@ -6,7 +6,7 @@
   left: 0px;
   right: 0px;
   margin-bottom: 10px;
-  height: 100px;
+  height: 110px;
   z-index: 999;
 }
 .form {
@@ -16,8 +16,12 @@
 input {
   font-size: 15px;
   margin: 10px;
-  padding: 10px;
+  padding: 5px 10px;
   border: none;
+}
+
+.red {
+  border-color: red;
 }
 
 .dropdown-menus {
