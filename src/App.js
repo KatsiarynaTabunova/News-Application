@@ -7,7 +7,9 @@ import './App.css';
 function App() {
   const [news, setNews] = useState([]);
   const [error, setError] = useState('');
-  const [requestText, setRequestText] = useState('');
+  const [requestText, setRequestText] = useState(
+    localStorage.getItem('requestText') || ''
+  );
   const [isLoading, setIsloading] = useState(true);
   const [requestData, setRequestData] = useState('2022-09-30');
   const [requestSort, setRequestSort] = useState('Popularity');
@@ -74,9 +76,9 @@ function App() {
     <div className="App">
       <SearchForm
         setRequestText={(text) => {
-          console.log('setRequestText=' + text);
           setRequestText(text);
         }}
+        requestText={requestText}
         setRequestData={(data) => {
           setIsloading(true);
           setRequestData(data);
@@ -91,6 +93,7 @@ function App() {
             alert('Поле пустое');
           } else {
             setShowInputError(false);
+            localStorage.setItem('requestText', requestText);
             setIsPagination(false);
             setCurrentPage(1);
             setFetching(true);

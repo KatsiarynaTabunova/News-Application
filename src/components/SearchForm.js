@@ -5,37 +5,42 @@ import './SearchForm.css';
 
 function SearchForm({
   setRequestText,
+  requestText,
   setRequestData,
   setRequestSort,
   submit,
   showInputError,
 }) {
-  const [searchDate, setSearchDate] = useState('');
-  const [dropDownDateState, setDropDownDateState] =
-    useState('Choose the option');
-  const [dropDownSortState, setDropDownSortState] = useState('Popularity');
+  const [searchDate, setSearchDate] = useState(
+    localStorage.getItem('date') || ''
+  );
+  const [dropDownDateState, setDropDownDateState] = useState(
+    localStorage.getItem('exactDate') || 'Choose the option'
+  );
+  const [dropDownSortState, setDropDownSortState] = useState(
+    localStorage.getItem('sorting') || 'popularity'
+  );
 
   const handleDropdownDateChange = (event) => {
     let dropDownValue = event.target.value;
-
+    let formatedDate;
     switch (dropDownValue) {
       case 'choose the option':
-        dropDownValue = 0;
+        formatedDate = 0;
         break;
       case 'today':
-        dropDownValue = handleDaysOfDate(0);
+      default:
+        formatedDate = handleDaysOfDate(0);
         break;
       case 'two-weeks-ago':
-        dropDownValue = handleDaysOfDate(14);
+        formatedDate = handleDaysOfDate(14);
         break;
       case 'one-month-ago':
-        dropDownValue = handleMonthOfDate(1);
+        formatedDate = handleMonthOfDate(1);
         break;
-      default:
-        dropDownValue = handleDaysOfDate(0);
     }
     setDropDownDateState(dropDownValue);
-    setSearchDate(dropDownValue);
+    setSearchDate(formatedDate);
   };
 
   const handleDropdownSortChange = (event) => {
@@ -50,8 +55,11 @@ function SearchForm({
     setRequestData(searchDate);
     setRequestSort(dropDownSortState);
 
-    // localStorage.setItem('searchText', searchText);
-    // localStorage.setItem('udate', searchDate ? user : '');
+    // localStorage.setItem('searchText', requestText);
+    localStorage.setItem('date', searchDate);
+    localStorage.setItem('exactDate', dropDownDateState);
+    localStorage.setItem('sorting', dropDownSortState);
+    localStorage.setItem('error', showInputError);
     submit();
   }
 
@@ -62,8 +70,8 @@ function SearchForm({
         <input
           className={showInputError === true ? 'error' : 'none'}
           type="text"
+          value={requestText}
           onChange={(e) => {
-            console.log('setSearchText=' + e.target.value);
             setRequestText(e.target.value);
           }}
           placeholder="enter information"
